@@ -3,6 +3,11 @@ import Navbar from "./components/Navbar";
 import MusicCard from "./components/MusicCard";
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   render() {
     return (
       <div className="App">
