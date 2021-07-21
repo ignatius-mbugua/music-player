@@ -8,65 +8,59 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 class MusicCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.music_ref = React.createRef();
+  constructor() {
+    super();
+    this.ref_music = React.createRef();
+    this.ref_music_art = React.createRef();
     this.state = {
       songs: ["hey", "summer", "ukulele"],
       song_index: 0,
-      song_title: "",
       is_playing: false,
     };
   }
 
   // Functions
 
-  // load song
-  loadSong = (songIndex) => {
-    let song = this.state.songs[songIndex];
-    this.setState({ song_title: song });
-    this.music_img_ref.current.src = `/images/${song}.jpg`;
-    this.music_ref.current.src = `/music/${song}.mp3`;
-  };
-
   // play song
-  playSong = () => {
-    if (!this.state.is_playing) {
-      this.music_ref.current.play();
-      this.setState({ is_playing: true });
+  playOrPauseSong = () => {
+    let { is_playing } = this.state;
+    if (!is_playing) {
+      this.ref_music.current.play();
     } else {
-      this.pauseSong();
+      this.ref_music.current.pause();
     }
-  };
-
-  // pause song
-  pauseSong = () => {
-    this.music_ref.current.pause();
-    this.setState({ is_playing: false });
+    this.setState({ is_playing: !is_playing });
   };
 
   // previous song
   previousSong = () => {
-    var song_index = this.state.song_index - 1;
+    let { is_playing } = this.state;
+    let song_index = this.state.song_index - 1;
     if (song_index < 0) {
       this.setState({ song_index: this.state.songs.length - 1 });
     } else {
       this.setState({ song_index: song_index });
     }
 
-    // this.loadSong(this.state.song_index);
-    this.playSong();
+    this.ref_music.current.load();
+    if (is_playing) {
+      this.ref_music.current.play();
+    }
   };
 
   // next song
   nextSong = () => {
-    var song_index = this.state.song_index + 1;
+    let { is_playing } = this.state;
+    let song_index = this.state.song_index + 1;
     if (song_index > this.state.songs.length - 1) {
       this.setState({ song_index: 0 });
     } else {
       this.setState({ song_index: song_index });
     }
-    this.playSong();
+    this.ref_music.current.load();
+    if (is_playing) {
+      this.ref_music.current.play();
+    }
   };
 
   // update progress bar
@@ -78,11 +72,10 @@ class MusicCard extends React.Component {
   // Lifecycle methods
   componentDidMount() {
     // event listeners
-    // functions
-    // this.loadSong(this.state.song_index);
   }
 
   render() {
+    let { is_playing, songs, song_index } = this.state;
     return (
       <div className="row pt-5">
         <div className="col-sm-12 col-md-6 mx-auto">
@@ -92,22 +85,25 @@ class MusicCard extends React.Component {
               {/* Image */}
               <img
                 id="music_img"
-                src={`/images/${this.state.songs[this.state.song_index]}.jpg`}
-                className="img-fluid rounded-circle"
+                ref={this.ref_music_art}
+                src={`/images/${songs[song_index]}.jpg`}
+                className="img-fluid rounded-lg"
+                width="300"
+                height="200"
                 alt="music-art"
               />
 
               {/* Audio */}
-              <audio
-                ref={this.music_ref}
-                src={`/music/${this.state.songs[this.state.song_index]}.mp3`}
-                id="music"
-              ></audio>
+              <audio ref={this.ref_music} id="music">
+                <source
+                  src={`/music/${songs[song_index]}.mp3`}
+                  type="audio/ogg"
+                />
+                Your broswer doesn't support the audio element
+              </audio>
 
               {/* Music info */}
-              <h5 className="pt-3">
-                {this.state.songs[this.state.song_index]}
-              </h5>
+              <h5 className="pt-3">{songs[song_index]}</h5>
 
               {/* Progress Bar*/}
               <div className="progress">
@@ -132,12 +128,12 @@ class MusicCard extends React.Component {
                 <button
                   type="button"
                   className="btn btn-outline-primary"
-                  onClick={this.playSong}
+                  onClick={this.playOrPauseSong}
                 >
-                  {this.state.is_playing ? (
-                    <FontAwesomeIcon icon={faPause} size="2x" />
-                  ) : (
+                  {!is_playing ? (
                     <FontAwesomeIcon icon={faPlay} size="2x" />
+                  ) : (
+                    <FontAwesomeIcon icon={faPause} size="2x" />
                   )}
                 </button>
                 <button
