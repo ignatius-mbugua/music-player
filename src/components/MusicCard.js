@@ -10,13 +10,26 @@ import {
 class MusicCard extends React.Component {
   constructor() {
     super();
+    // refs
     this.ref_music = React.createRef();
     this.ref_music_art = React.createRef();
+    this.ref_progress = React.createRef();
     this.state = {
       songs: ["hey", "summer", "ukulele"],
       song_index: 0,
       is_playing: false,
     };
+  }
+
+  // Lifecycle methods
+  componentDidMount() {
+    // event listeners
+    this.ref_music.current.addEventListener(
+      "timeupdate",
+      this.timeUpdate,
+      false
+    );
+    this.ref_music.current.addEventListener("ended", this.nextSong, false);
   }
 
   // Functions
@@ -64,15 +77,16 @@ class MusicCard extends React.Component {
   };
 
   // update progress bar
+  timeUpdate = () => {
+    let duration = this.ref_music.current.duration;
+    let currentTime = this.ref_music.current.currentTime;
+    let progressPercent = (currentTime / duration) * 100;
+    this.ref_progress.current.style.width = `${progressPercent}%`;
+  };
 
   // set progress bar
 
   // duration and current time of song
-
-  // Lifecycle methods
-  componentDidMount() {
-    // event listeners
-  }
 
   render() {
     let { is_playing, songs, song_index } = this.state;
@@ -108,6 +122,7 @@ class MusicCard extends React.Component {
               {/* Progress Bar*/}
               <div className="progress">
                 <div
+                  ref={this.ref_progress}
                   className="progress-bar"
                   role="progressbar"
                   aria-valuenow="0"
