@@ -18,6 +18,9 @@ class MusicCard extends React.Component {
       songs: ["hey", "summer", "ukulele"],
       song_index: 0,
       is_playing: false,
+      progress_percent: 0,
+      song_duration: "0:00",
+      song_curentTime: "0:00",
     };
   }
 
@@ -30,6 +33,11 @@ class MusicCard extends React.Component {
       false
     );
     this.ref_music.current.addEventListener("ended", this.nextSong, false);
+    // this.ref_progress.current.addEventListener(
+    //   "click",
+    //   this.changeCurrentTime,
+    //   false
+    // );
   }
 
   // Functions
@@ -81,15 +89,43 @@ class MusicCard extends React.Component {
     let duration = this.ref_music.current.duration;
     let currentTime = this.ref_music.current.currentTime;
     let progressPercent = (currentTime / duration) * 100;
+    this.setState({ progress_percent: progressPercent });
     this.ref_progress.current.style.width = `${progressPercent}%`;
+    let formattedCurrentTime = this.formatTime(parseInt(currentTime));
+    this.setState({ song_curentTime: formattedCurrentTime });
+    let formattedDuration = this.formatTime(duration);
+    this.setState({ song_duration: formattedDuration });
   };
 
-  // set progress bar
+  // set progress bar on click
+  // changeCurrentTime = (e) => {
+  //   let width = this.clientWidth;
+  //   let clickX = e.offsetX;
+  //   let duration = this.ref_music.current.duration;
 
-  // duration and current time of song
+  //   this.ref_music.current.currentTime = (clickX / width) * duration;
+  // };
+
+  formatTime = (currentTime) => {
+    if (isNaN(currentTime)) {
+      return "0:00";
+    }
+    let minutes = Math.floor(currentTime / 60);
+    let seconds = Math.floor(currentTime % 60);
+    seconds = seconds >= 10 ? seconds : "0" + (seconds % 60);
+    let formatTime = minutes + ":" + seconds;
+    return formatTime;
+  };
 
   render() {
-    let { is_playing, songs, song_index } = this.state;
+    let {
+      is_playing,
+      songs,
+      song_index,
+      progress_percent,
+      song_curentTime,
+      song_duration,
+    } = this.state;
     return (
       <div className="row pt-5">
         <div className="col-sm-12 col-md-6 mx-auto">
@@ -119,13 +155,19 @@ class MusicCard extends React.Component {
               {/* Music info */}
               <h5 className="pt-3">{songs[song_index]}</h5>
 
+              {/* Audio Time */}
+              <div className="d-flex justify-content-between">
+                <span id="currentTime">{song_curentTime}</span>
+                <span id="songDuration">{song_duration}</span>
+              </div>
+
               {/* Progress Bar*/}
               <div className="progress">
                 <div
                   ref={this.ref_progress}
                   className="progress-bar"
                   role="progressbar"
-                  aria-valuenow="0"
+                  aria-valuenow={progress_percent}
                   aria-valuemin="0"
                   aria-valuemax="100"
                 ></div>
