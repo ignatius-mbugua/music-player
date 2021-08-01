@@ -14,6 +14,7 @@ class MusicCard extends React.Component {
     this.ref_music = React.createRef();
     this.ref_music_art = React.createRef();
     this.ref_progress = React.createRef();
+    this.ref_main_progress = React.createRef();
     this.state = {
       songs: ["hey", "summer", "ukulele"],
       song_index: 0,
@@ -33,11 +34,11 @@ class MusicCard extends React.Component {
       false
     );
     this.ref_music.current.addEventListener("ended", this.nextSong, false);
-    // this.ref_progress.current.addEventListener(
-    //   "click",
-    //   this.changeCurrentTime,
-    //   false
-    // );
+    this.ref_main_progress.current.addEventListener(
+      "click",
+      this.changeCurrentTime,
+      false
+    );
   }
 
   // Functions
@@ -88,7 +89,7 @@ class MusicCard extends React.Component {
   timeUpdate = () => {
     let duration = this.ref_music.current.duration;
     let currentTime = this.ref_music.current.currentTime;
-    let progressPercent = ((currentTime / duration) * 100).toFixed(1);
+    let progressPercent = (currentTime / duration) * 100;
     this.setState({ progress_percent: progressPercent });
     this.ref_progress.current.style.width = `${progressPercent}%`;
     let formattedCurrentTime = this.formatTime(parseInt(currentTime));
@@ -98,13 +99,13 @@ class MusicCard extends React.Component {
   };
 
   // set progress bar on click
-  // changeCurrentTime = (e) => {
-  //   let width = this.clientWidth;
-  //   let clickX = e.offsetX;
-  //   let duration = this.ref_music.current.duration;
-
-  //   this.ref_music.current.currentTime = (clickX / width) * duration;
-  // };
+  changeCurrentTime = (e) => {
+    let duration = this.ref_music.current.duration;
+    let main_progress_width = this.ref_main_progress.current.clientWidth;
+    let click_offset = e.offsetX;
+    this.ref_music.current.currentTime =
+      (click_offset / main_progress_width) * duration;
+  };
 
   formatTime = (currentTime) => {
     if (isNaN(currentTime)) {
@@ -162,7 +163,7 @@ class MusicCard extends React.Component {
               </div>
 
               {/* Progress Bar*/}
-              <div className="progress">
+              <div className="progress" ref={this.ref_main_progress}>
                 <div
                   ref={this.ref_progress}
                   className="progress-bar"
