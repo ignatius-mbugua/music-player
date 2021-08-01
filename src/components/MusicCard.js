@@ -63,8 +63,9 @@ class MusicCard extends React.Component {
     } else {
       this.setState({ song_index: song_index });
     }
-
     this.ref_music.current.load();
+    this.ref_progress.current.style.width = "0%";
+    this.setState({ progress_percent: 0 });
     if (is_playing) {
       this.ref_music.current.play();
     }
@@ -80,6 +81,8 @@ class MusicCard extends React.Component {
       this.setState({ song_index: song_index });
     }
     this.ref_music.current.load();
+    this.ref_progress.current.style.width = "0%";
+    this.setState({ progress_percent: 0 });
     if (is_playing) {
       this.ref_music.current.play();
     }
@@ -89,7 +92,7 @@ class MusicCard extends React.Component {
   timeUpdate = () => {
     let duration = this.ref_music.current.duration;
     let currentTime = this.ref_music.current.currentTime;
-    let progressPercent = (currentTime / duration) * 100;
+    let progressPercent = ((currentTime / duration) * 100).toFixed(2);
     this.setState({ progress_percent: progressPercent });
     this.ref_progress.current.style.width = `${progressPercent}%`;
     let formattedCurrentTime = this.formatTime(parseInt(currentTime));
