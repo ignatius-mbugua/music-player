@@ -88,7 +88,7 @@ class MusicCard extends React.Component {
   timeUpdate = () => {
     let duration = this.ref_music.current.duration;
     let currentTime = this.ref_music.current.currentTime;
-    let progressPercent = (currentTime / duration) * 100;
+    let progressPercent = ((currentTime / duration) * 100).toFixed(1);
     this.setState({ progress_percent: progressPercent });
     this.ref_progress.current.style.width = `${progressPercent}%`;
     let formattedCurrentTime = this.formatTime(parseInt(currentTime));
