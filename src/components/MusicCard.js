@@ -141,7 +141,7 @@ class MusicCard extends React.Component {
                 id="music_img"
                 ref={this.ref_music_art}
                 src={`/images/${songs[song_index]}.jpg`}
-                className="img-fluid rounded-lg"
+                className="img-fluid rounded-lg shadow-lg"
                 width="300"
                 height="200"
                 alt="music-art"
@@ -157,7 +157,7 @@ class MusicCard extends React.Component {
               </audio>
 
               {/* Music info */}
-              <h5 className="pt-3">{songs[song_index]}</h5>
+              <h4 className="py-4">{songs[song_index]}</h4>
 
               {/* Audio Time */}
               <div className="d-flex justify-content-between">
@@ -179,31 +179,34 @@ class MusicCard extends React.Component {
 
               {/* Control Buttons */}
               <div className="pt-4">
-                <button
-                  type="button"
-                  className="btn btn-outline-primary float-left"
+                <FontAwesomeIcon
+                  icon={faStepBackward}
+                  size="2x"
                   onClick={this.previousSong}
-                >
-                  <FontAwesomeIcon icon={faStepBackward} size="2x" />
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-outline-primary"
-                  onClick={this.playOrPauseSong}
-                >
-                  {!is_playing ? (
-                    <FontAwesomeIcon icon={faPlay} size="2x" />
-                  ) : (
-                    <FontAwesomeIcon icon={faPause} size="2x" />
-                  )}
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-outline-primary float-right"
+                />
+
+                {!is_playing ? (
+                  <FontAwesomeIcon
+                    icon={faPlay}
+                    size="2x"
+                    className="ml-5"
+                    onClick={this.playOrPauseSong}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faPause}
+                    size="2x"
+                    className="ml-5"
+                    onClick={this.playOrPauseSong}
+                  />
+                )}
+
+                <FontAwesomeIcon
+                  icon={faStepForward}
+                  size="2x"
+                  className="ml-5"
                   onClick={this.nextSong}
-                >
-                  <FontAwesomeIcon icon={faStepForward} size="2x" />
-                </button>
+                />
               </div>
             </div>
           </div>
