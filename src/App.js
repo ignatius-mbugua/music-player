@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import MusicCard from "./components/MusicCard";
 import Footer from "./components/Footer";
@@ -11,13 +12,13 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <BrowserRouter>
         <Navbar />
         <div className="container">
           <MusicCard />
         </div>
         <Footer />
-      </div>
+      </BrowserRouter>
     );
   }
 }
