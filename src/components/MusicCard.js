@@ -16,7 +16,23 @@ class MusicCard extends React.Component {
     this.ref_progress = React.createRef();
     this.ref_main_progress = React.createRef();
     this.state = {
-      songs: ["hey", "summer", "ukulele"],
+      songs: [
+        {
+          title: "Hey",
+          artist: "Benjamin Tissot",
+          name: "hey",
+        },
+        {
+          title: "Summer",
+          artist: "Benjamin Tissot",
+          name: "summer",
+        },
+        {
+          title: "Ukulele",
+          artist: "Benjamin Tissot",
+          name: "ukulele",
+        },
+      ],
       song_index: 0,
       is_playing: false,
       progress_percent: 0,
@@ -140,7 +156,7 @@ class MusicCard extends React.Component {
               <img
                 id="music_img"
                 ref={this.ref_music_art}
-                src={`/images/${songs[song_index]}.jpg`}
+                src={`/images/${songs[song_index].name}.jpg`}
                 className="img-fluid rounded-lg shadow-lg"
                 width="300"
                 height="200"
@@ -150,14 +166,17 @@ class MusicCard extends React.Component {
               {/* Audio */}
               <audio ref={this.ref_music} id="music">
                 <source
-                  src={`/music/${songs[song_index]}.mp3`}
+                  src={`/music/${songs[song_index].name}.mp3`}
                   type="audio/ogg"
                 />
                 Your broswer doesn't support the audio element
               </audio>
 
               {/* Music info */}
-              <h4 className="py-4">{songs[song_index]}</h4>
+              <div className="py-3">
+                <h4>{songs[song_index].title}</h4>
+                <p className="text-muted">{songs[song_index].artist}</p>
+              </div>
 
               {/* Audio Time */}
               <div className="d-flex justify-content-between">
@@ -207,6 +226,12 @@ class MusicCard extends React.Component {
                   className="ml-5"
                   onClick={this.nextSong}
                 />
+              </div>
+              {/* Track numbers */}
+              <div className="pt-4">
+                <p className="text-muted">
+                  {song_index + 1} / {songs.length}
+                </p>
               </div>
             </div>
           </div>
