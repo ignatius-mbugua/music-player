@@ -32,6 +32,41 @@ class MusicCard extends React.Component {
           artist: "Benjamin Tissot",
           name: "ukulele",
         },
+        {
+          title: "Buddy",
+          artist: "Benjamin Tissot",
+          name: "buddy",
+        },
+        {
+          title: "Energy",
+          artist: "Benjamin Tissot",
+          name: "energy",
+        },
+        {
+          title: "Evolution",
+          artist: "Benjamin Tissot",
+          name: "evolution",
+        },
+        {
+          title: "Funny Song",
+          artist: "Benjamin Tissot",
+          name: "funnysong",
+        },
+        {
+          title: "Happy Rock",
+          artist: "Benjamin Tissot",
+          name: "happyrock",
+        },
+        {
+          title: "Moose",
+          artist: "Benjamin Tissot",
+          name: "moose",
+        },
+        {
+          title: "Sunny",
+          artist: "Benjamin Tissot",
+          name: "sunny",
+        },
       ],
       song_index: 0,
       is_playing: false,
